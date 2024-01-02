@@ -36,7 +36,7 @@ public class ProductServiceImplementation implements ProductService{
 		 
 		Category topLevel = categoryRepository.findByName(req.getTopLevelCategory());
 		//
-if(topLevel==null) {
+			if(topLevel==null) {
 			
 			Category topLavelCategory=new Category();
 			topLavelCategory.setName(req.getTopLevelCategory());
@@ -122,12 +122,19 @@ if(topLevel==null) {
 
 	@Override
 	public List<Product> findProductByCategory(String category) {
+
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	@Override
+	public List<Product> searchProduct(String query) {
+		List<Product> products=productRepository.searchProduct(query);
+		return products;
+	}
 
 	@Override
-	public Page<Product> getAllProduct(String category, List<String> colors, List<String> sizes, Integer minPrice,
+	public Page<Product> getAllProducts(String category, List<String> colors, List<String> sizes, Integer minPrice,
 			Integer maxPrice, Integer minDiscount, String sort, String stock, Integer pageNumber, Integer pageSize) {
 		
 		Pageable pageable = PageRequest.of(pageNumber, pageSize);
@@ -162,4 +169,8 @@ if(topLevel==null) {
 
 	}
 
+	@Override
+	public List<Product> getAllProducts() {
+		return productRepository.findAll();
+	}
 }
