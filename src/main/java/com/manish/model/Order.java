@@ -21,7 +21,7 @@ import jakarta.persistence.Table;
 public class Order {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @Column(name="order_id")
@@ -169,6 +169,27 @@ public class Order {
 
 	public void setOrderId(String orderId) {
 		this.orderId = orderId;
+	}
+
+	public Order(Long id, String orderId, User user, List<OrderItem> orderItems, LocalDateTime orderDate,
+			LocalDateTime deliveryDate, Address shippingAddress, PaymentDetails paymentDetails, double totalPrice,
+			Integer totalDiscountedPrice, Integer discount, OrderStatus orderStatus, int totalItem,
+			LocalDateTime createdAt) {
+		super();
+		this.id = id;
+		this.orderId = orderId;
+		this.user = user;
+		this.orderItems = orderItems;
+		this.orderDate = orderDate;
+		this.deliveryDate = deliveryDate;
+		this.shippingAddress = shippingAddress;
+		this.paymentDetails = paymentDetails;
+		this.totalPrice = totalPrice;
+		this.totalDiscountedPrice = totalDiscountedPrice;
+		this.discount = discount;
+		this.orderStatus = orderStatus;
+		this.totalItem = totalItem;
+		this.createdAt = createdAt;
 	}
 
     // constructors, getters and setters

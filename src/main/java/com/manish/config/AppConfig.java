@@ -14,11 +14,12 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import jakarta.servlet.http.HttpServletRequest;
 
 @Configuration
-//@EnableWebSecurity
+@EnableWebMvc
 public class AppConfig {
 	
 	@Bean
@@ -35,7 +36,8 @@ public class AppConfig {
 			// TODO Auto-generated method stub
 			CorsConfiguration cfg = new CorsConfiguration();
 			cfg.setAllowedOrigins(Arrays.asList(
-					"http://localhost:3000/"));
+					"http://localhost:3000/",
+					"https://ecommercebymanish3.vercel.app/"));
 			cfg.setAllowedMethods(Collections.singletonList("*"));
 			cfg.setAllowCredentials(true);
 			cfg.setAllowedHeaders(Collections.singletonList("*"));
@@ -57,6 +59,17 @@ public class AppConfig {
 		return new BCryptPasswordEncoder();
 		
 	}
+	
+	@Bean
+	SecurityFilterChain web(HttpSecurity http) throws Exception {
+	    http
+	        .authorizeHttpRequests((authorize) -> authorize
+	            .requestMatchers("/v3/api-docs").permitAll()
+	        );
+	        // ...
+
+	    return http.build();
+	} 
 	
 	
 

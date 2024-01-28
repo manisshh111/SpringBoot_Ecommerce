@@ -16,10 +16,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.manish.config.JwtProvider;
 import com.manish.exception.UserException;
+import com.manish.model.Cart;
 import com.manish.model.User;
 import com.manish.repository.UserRepository;
 import com.manish.request.LoginRequest;
 import com.manish.response.AuthResponse;
+import com.manish.service.CartService;
 import com.manish.service.CustomUserServiceImplementation;
 
 @RestController
@@ -30,12 +32,14 @@ public class AuthController {
 	private JwtProvider jwtProvider;
 	private PasswordEncoder passwordEncoder;
 	private CustomUserServiceImplementation customUserServiceImplementation;
+	private CartService cartService;
 	
-	public AuthController(UserRepository userRepository, JwtProvider jwtProvider, PasswordEncoder passwordEncoder, CustomUserServiceImplementation customUserServiceImplementation) {
+	public AuthController(UserRepository userRepository, JwtProvider jwtProvider, PasswordEncoder passwordEncoder, CustomUserServiceImplementation customUserServiceImplementation, CartService cartService) {
 		this.userRepository=userRepository;
 		this.jwtProvider=jwtProvider;
 		this.passwordEncoder=passwordEncoder;
 		this.customUserServiceImplementation= customUserServiceImplementation;
+		this.cartService=cartService;
 	}
 
 	@PostMapping("/signup")
@@ -58,6 +62,7 @@ public class AuthController {
 		createdUser.setFirstName(firstName);
 		createdUser.setLastName(lastName);
 		User savedUser= userRepository.save(createdUser);
+		Cart cart=cartService.createCart(savedUser);
 		
 		Authentication authentication = new UsernamePasswordAuthenticationToken(savedUser.getEmail(), savedUser.getPassword());
 		SecurityContextHolder.getContext().setAuthentication(authentication);
